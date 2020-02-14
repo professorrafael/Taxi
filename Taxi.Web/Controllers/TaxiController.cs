@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Taxi.Web.Data;
 using Taxi.Web.Data.Entities;
 
@@ -19,7 +16,6 @@ namespace Taxi.Web.Controllers
             _context = context;
         }
 
-        // GET: Taxi
         public async Task<IActionResult> Index()
         {
             return View(await _context.Taxis.ToListAsync());
@@ -43,25 +39,23 @@ namespace Taxi.Web.Controllers
             return View(taxiEntity);
         }
 
-        // GET: Taxi/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Taxi/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Plaque")] TaxiEntity taxiEntity)
+        public async Task<IActionResult> Create(TaxiEntity taxiEntity)
         {
             if (ModelState.IsValid)
             {
+                taxiEntity.Plaque = taxiEntity.Plaque.ToUpper();
                 _context.Add(taxiEntity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(taxiEntity);
         }
 
