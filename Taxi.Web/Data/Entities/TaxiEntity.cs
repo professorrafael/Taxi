@@ -14,5 +14,6 @@ namespace Taxi.Web.Data.Entities
         [RegularExpression(@"^([A-Za-z]{3}\d{3})$", ErrorMessage = "O campo {0} deve iniciar com três caracteres e terminar com três números!!!!")]
         [Required(ErrorMessage = "O campo {0} é obrigatório!!!!")]
         public string Plaque { get; set; }
+        public ICollection<TripEntity> Trips { get; set; }
     }
 }
